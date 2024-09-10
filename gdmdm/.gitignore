@@ -1,0 +1,9 @@
+logdir
+database
+tmp
+body_models/
+exps/
+exps
+static/
+__pycache__/
+.ipynb_checkpoints/

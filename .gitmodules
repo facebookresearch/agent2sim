@@ -1,0 +1,4 @@
+[submodule "lab4d"]
+	path = lab4d
+	url = https://github.com/lab4d-org/lab4d.git
+	branch = lab4dgs
