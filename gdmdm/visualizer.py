@@ -457,7 +457,7 @@ class DiffusionVisualizer:
         self.server.request_share_url()
 
         with self.server.add_gui_folder("Sim control"):
-            self.pause_ckbox = self.server.add_gui_checkbox("Pause sim", initial_value=True)
+            self.pause_ckbox = self.server.add_gui_checkbox("Pause sim", initial_value=False)
             self.exit_ckbox = self.server.add_gui_checkbox("Exit sim", initial_value=False)
             self.sequence_slider = self.server.add_gui_slider(
                 "Sequence", min=0, max=self.num_seq - 1, step=1, initial_value=0

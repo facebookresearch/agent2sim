@@ -4,6 +4,7 @@ import numpy as np
 import time
 import pdb
 
+from lab4d.config import load_flags_from_file
 from lab4d.render import get_config
 from lab4d.utils.quat_transform import matrix_to_quaternion, quaternion_translation_mul
 from visualizer import DiffusionVisualizer
@@ -41,23 +42,27 @@ class DiffusionVisualizerGS(DiffusionVisualizer):
     
 
     def initialize_server(self):
-        opts = get_config()
         # load model/data
-        opts["render_res"] = 512
-        opts["seqname"] = "cat-pikachu-2024-08-v2"
-        opts["logname"] = "diffgs-ft-fg-b32-urdf-quad-r120-const-absgrad-adapt-again"
-        opts["field_type"] = "fg"
+        seqname = "cat-pikachu-2024-08-v2"
+        logname="diffgs-ft-fg-b32-urdf-quad-r120-const-absgrad-adapt-again"
+        opts = load_flags_from_file(f"logdir/{seqname}-{logname}/opts.log")
+        opts["load_suffix"] = "latest"
         opts["lab4d_path"] = ""
+        opts["use_gui"] = False
         model_fg, data_info, _ = Trainer.construct_test_model(opts, return_refs=False, force_reload=False)
 
+        seqname = "Oct5at10-49AM-poly"
+        logname="diffgs-fs-bg-b8-bob-r120-mlp-fixgs-20reset-01th-rgbd001-exp"
+        opts = load_flags_from_file(f"logdir/{seqname}-{logname}/opts.log")
+        opts["load_suffix"] = "latest"
         opts["lab4d_path"] = ""
-        opts["logroot"] = sys.argv[1].split("=")[1].rsplit("/", 2)[0]
-        opts["seqname"] = "Oct5at10-49AM-poly"
-        opts["logname"] = "diffgs-fs-bg-b8-bob-r120-mlp-fixgs-20reset-01th-rgbd001-exp"
-        opts["field_type"] = "bg"
+        opts["use_gui"] = False
         model_bg, data_info, _ = Trainer.construct_test_model(opts, return_refs=False, force_reload=False)
 
+        # load composed model
         opts["field_type"] = "comp"
+        opts["use_gui"] = True
+        opts["render_res"] = 512
         model = GSplatModel(opts, data_info)
         model.gaussians.gaussians[0] = model_bg.gaussians
         model.gaussians.gaussians[1] = model_fg.gaussians

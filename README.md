@@ -85,19 +85,30 @@ python long_video_two_agents.py --load_logname cat-pikachu-2024-07-compose-ft --
 
 ### Training
 
-Prepare training data
+### Prepare training data
 #### Option 1: download processed data
 ```
 wget "https://www.dropbox.com/scl/fi/9jkme44gesqifaxq85ta1/cat-pikachu-2024-08-v2-compose-ft-train-L64-S1.pkl?rlkey=iy6t0s7afle9siaowf7bp3up4&st=03cnk71l&dl=0" -O data/motion/cat-pikachu-2024-08-v2-compose-ft-train-L64-S1.pkl
 
 ```
 
-#### Option 2: extract from 4D reconstruction
+#### Option 2: extract motion from 4D reconstruction
 ```
 python generate_data.py --in_path "../lab4d/logdir/bunny-compose-ft/export_*"
 ```
+The motion data will be saved to `database/motion`.
 
-Training
+### Visualization
+You can visualize motion data by
+```
+python visualize_dataset.py --load_logname cat-pikachu-2024-07-compose-ft
+```
+or 
+```
+python visualize_dataset.py --load_logname bunny-compose-ft
+```
+
+### Training
 ```
 bash train.sh cat-pikachu-2024-08-v2-compose-ft b128 128 1
 ```
