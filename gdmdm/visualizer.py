@@ -604,12 +604,17 @@ class DiffusionVisualizer:
         wp = wp.reshape(bs, -1, 3)
         colors = cmap(np.linspace(0, 1, wp.shape[1]))[:, :3]
         for idx in range(bs):
-            self.server.add_point_cloud(
+            tmp = self.server.add_point_cloud(
                 f"/frames/{prefix}/{idx}",
                 wp[idx],
                 point_size=point_size,
                 colors=colors,
             )
+        setattr(self, prefix, tmp)
+
+    def remove_tag_viser(self, prefix):
+        if hasattr(self, prefix):
+            getattr(self, prefix).remove()
 
     def render_goal_viser(self, goal, color=[1.0, 0.0, 0.0]):
         """
@@ -627,7 +632,8 @@ class DiffusionVisualizer:
             )
             goal_meshes.append(goal_mesh)
         goal_meshes = trimesh.util.concatenate(goal_meshes)
-        self.server.add_mesh_trimesh(f"/frames/goal", goal_meshes)
+        tmp = self.server.add_mesh_trimesh(f"/frames/goal", goal_meshes)
+        setattr(self, "goal", tmp)
 
     def render_fullbody_viser(self, angles, wp, joints, render_mesh=True, agent_idx=0):
         """
@@ -694,6 +700,9 @@ class DiffusionVisualizer:
             cm_name="viridis",
         )
 
+    def viser_update_func(self):
+        pass
+
 # independent functions
 def run_sim(visualizer, config, rt_dict, save_to_file=False):
     data = rt_dict["data"]
@@ -719,6 +728,10 @@ def run_sim(visualizer, config, rt_dict, save_to_file=False):
 
     seg_idx = 0
     while not visualizer.exit_ckbox.value:
+        visualizer.remove_tag_viser("past")
+        visualizer.remove_tag_viser("waypoints")
+        visualizer.remove_tag_viser("roottraj")
+        visualizer.remove_tag_viser("goal")
         print("Round %d" % seg_idx)
         # reset
         if visualizer.autoreset_ckbox.value or visualizer.need_reset:
@@ -746,6 +759,7 @@ def run_sim(visualizer, config, rt_dict, save_to_file=False):
             i_max = len(visualizer.userwp_handles)
             while visualizer.pause_ckbox.value:
                 # play animation 
+                visualizer.viser_update_func()
                 time.sleep(0.3)
                 for j in range(i_max):
                     if j==i:

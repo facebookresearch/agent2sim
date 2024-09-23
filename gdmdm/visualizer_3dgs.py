@@ -58,6 +58,8 @@ class DiffusionVisualizerGS(DiffusionVisualizer):
         opts["lab4d_path"] = ""
         opts["use_gui"] = False
         model_bg, data_info, _ = Trainer.construct_test_model(opts, return_refs=False, force_reload=False)
+        # remove gaussians that are too far away
+        model_bg.gaussians._xyz.data[model_bg.gaussians._xyz[:,1] < -0.8] = 1000
 
         # load composed model
         opts["field_type"] = "comp"
