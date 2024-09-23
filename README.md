@@ -99,6 +99,9 @@ python generate_data.py --in_path "../lab4d/logdir/bunny-compose-ft/export_*"
 The motion data will be saved to `database/motion`.
 
 ### Visualization
+
+https://github.com/user-attachments/assets/63249dc2-9add-407f-8fe7-c1d1b24c2631
+
 You can visualize motion data by
 ```
 python visualize_dataset.py --load_logname cat-pikachu-2024-07-compose-ft
