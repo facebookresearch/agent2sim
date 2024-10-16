@@ -1,6 +1,10 @@
 # Agent-to-Sim: Learning Interactive Behavior from Casual Videos
 #### [**Project**](https://gengshan-y.github.io/agent2sim-www/) | [**Paper**](https://gengshan-y.github.io/agent2sim-www/materials/ATS-sep9_compressed.pdf) 
 
+## TODOs
+- [ ] Splat refinement code merge (see [Lab4d-GS](https://github.com/lab4d-org/lab4d/tree/lab4dgs) for reference)
+- [ ] Clean up
+
 ## Installation
 ```
 git clone git@github.com:facebookresearch/agent2sim.git --recursive
